@@ -1,0 +1,223 @@
+﻿<Page
+    x:Name="pageRoot"
+    x:Class="GazetaReaderFrontend.NewsItemPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <DataTemplate x:Key="Standard310X230ItemTemplate">
+
+            <Grid Height="230" 
+                  Width="310" 
+                  Margin="5,10,5,10">
+                  <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" 
+                          Height="230">
+                  <Image Source="{Binding NewsImagePath}"
+                         Stretch="UniformToFill"/>
+                  </Border>
+
+                  <StackPanel Height="50" 
+                              VerticalAlignment="Bottom" 
+                              Background="Black" 
+                              Style="{ThemeResource SettingsFlyoutSectionStyle}"
+                              Margin="0,10,0,0" 
+                              Opacity="0.5">
+
+
+                        <TextBlock Text="{Binding NewsTitle}" 
+                                   Style="{StaticResource BaseTextBlockStyle}"
+                                   TextWrapping="Wrap" />
+                  </StackPanel>
+               
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Page.TopAppBar>
+        <AppBar>
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton Label="На главную"
+                              FontFamily="Segoe UI" 
+                              FontSize="20"
+                              x:Name="ToMainBtn"
+                              Click="ToMainBtn_OnClick">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="Home"></SymbolIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Поделиться"
+                              FontFamily="Segoe UI" 
+                              FontSize="20"
+                              x:Name="ShareBtn"
+                              Click="ShareBtn_OnClick">
+                    <AppBarButton.Icon>
+                        <SymbolIcon Symbol="ReShare"></SymbolIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+          DataContext="{Binding ElementName=pageRoot, Path=Item}">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button VerticalAlignment="Center"
+                HorizontalAlignment="Center" 
+                Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                Style="{StaticResource NavigationBackButtonNormalStyle}"
+                AutomationProperties.Name="Back"
+                AutomationProperties.AutomationId="BackButton"
+                AutomationProperties.ItemType="Navigation Button"/>
+
+        <!--Заголовок новости!-->
+        <TextBlock Style="{ThemeResource HeaderTextBlockStyle}"
+                   Text="{Binding NewsTitle}"
+                   Grid.Row="0"
+                   Grid.Column="1"
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Left"
+                   TextWrapping="NoWrap"/>
+
+        <Grid Grid.Column="1" 
+              Grid.Row="1"
+              Margin="0,15,0,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="600"/>
+                <ColumnDefinition Width="650"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel  HorizontalAlignment="Left" 
+                         VerticalAlignment="Top"
+                         Grid.Column="0">
+
+                <!--Главное изображение!-->
+                <Border VerticalAlignment="Top">
+                    
+                    <Image Stretch="UniformToFill" 
+                       Height="500"
+                       VerticalAlignment="Top"
+                       Source="{Binding NewsImagePath}"/>
+                    
+                </Border>
+
+                <TextBlock HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Text="Поделиться в соцсетях"
+                           FontSize="12"
+                           FontFamily="Segoe UI"></TextBlock>
+
+                <!--Кнопки поделиться в соц. сетях!-->
+                <HyperlinkButton Name="ShareVkBtn" 
+                                 HorizontalAlignment="Left" 
+                                 VerticalAlignment="Top" 
+                                 BorderThickness="2" 
+                                 Height="40" 
+                                 Width="40" 
+                                 Click="ShareVkBtn_OnClick"
+                                 Margin="0,0,0,0">
+
+                    <HyperlinkButton.Background>
+                        <ImageBrush Stretch="Uniform" ImageSource="ms-appx:///Assets/vklogo.jpg"/>
+                    </HyperlinkButton.Background>
+
+                </HyperlinkButton>
+
+                <HyperlinkButton Name="ShareFbBtn" 
+                                 HorizontalAlignment="Left" 
+                                 VerticalAlignment="Top" 
+                                 BorderThickness="2" 
+                                 Height="40" 
+                                 Width="40" 
+                                 Click="ShareFbBtn_OnClick"
+                                 Margin="40,-40,0,0">
+
+                    <HyperlinkButton.Background>
+                        <ImageBrush Stretch="Uniform" ImageSource="ms-appx:///Assets/fbLogo.png"/>
+                    </HyperlinkButton.Background>
+
+                </HyperlinkButton>
+
+                <HyperlinkButton Name="ShareTwBtn" 
+                                 HorizontalAlignment="Left" 
+                                 VerticalAlignment="Top" 
+                                 BorderThickness="2" 
+                                 Height="40" 
+                                 Width="40" 
+                                 Click="ShareTwBtn_OnClick"
+                                 Margin="80,-40,0,0">
+
+                    <HyperlinkButton.Background>
+                        <ImageBrush Stretch="Uniform" ImageSource="ms-appx:///Assets/twLogo.png"/>
+                    </HyperlinkButton.Background>
+
+                </HyperlinkButton>
+
+                <!--Описание новости!-->
+                <TextBlock FontFamily="Arial"
+                           FontSize="20"
+                           TextWrapping="Wrap" 
+                           VerticalAlignment="Top"
+                           TextAlignment="Justify"
+                           Text="{Binding NewsDescription}"/>
+            </StackPanel>
+
+            <!--Основной текст новости!-->
+            <ScrollViewer VerticalScrollMode="Enabled" 
+                      Grid.Column="1">
+                <StackPanel HorizontalAlignment="Left" 
+                        VerticalAlignment="Top">
+                    
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                           TextWrapping="Wrap"
+                           FontFamily="Arial"
+                           TextAlignment="Justify"
+                           MaxWidth="650"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Margin="15,0,25,0"
+                           Text="{Binding NewsArticle}"
+                           IsTextSelectionEnabled="True"/>
+                    
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--Связанные новости!-->
+            <ScrollViewer Grid.Column="2" HorizontalScrollMode="Disabled" VerticalScrollMode="Enabled">
+                
+                <GridView  
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding ElementName=pageRoot, Path=Item.RelatedNewsItems}"
+                      VerticalAlignment="Stretch"
+                      ManipulationMode="System"
+                      Name="RelatedGridView"
+                      ItemTemplate="{StaticResource Standard310X230ItemTemplate}"
+                      SelectionMode="None"
+                      IsSwipeEnabled="True"
+                      IsItemClickEnabled="True"
+                      ItemClick="RelatedGridView_ItemClick"/>
+                
+            </ScrollViewer>
+
+        </Grid>
+        
+       
+
+    </Grid>
+
+</Page>

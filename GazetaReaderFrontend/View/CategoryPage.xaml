@@ -1,0 +1,96 @@
+﻿<Page
+    x:Name="pageRoot"
+    x:Class="GazetaReaderFrontend.CategoryPage"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="pageRoot_Loaded">
+
+    <Page.Resources>
+        
+        <DataTemplate x:Key="Standard310X230ItemTemplate">
+            
+            <Grid Height="230" 
+                  Width="310" 
+                  Margin="5,10,5,10">
+
+                <Border Background="{ThemeResource 
+                    ListViewItemPlaceholderBackgroundThemeBrush}" 
+                        Height="230">
+
+                    <Image Source="{Binding NewsImagePath}"
+                           Stretch="UniformToFill" 
+                           AutomationProperties.Name="{Binding NewsId}"/>
+                    
+                </Border>
+                
+                <StackPanel Height="50" 
+                            VerticalAlignment="Bottom" 
+                            Background="Black" 
+                            Style="{ThemeResource SettingsFlyoutSectionStyle}"
+                            Margin="0,10,0,0" 
+                            Opacity="0.5">
+                    
+                    <TextBlock Text="{Binding NewsTitle}" 
+                               Style="{StaticResource BaseTextBlockStyle}"
+                               TextWrapping="Wrap" />
+                    
+                </StackPanel>
+                
+            </Grid>
+            
+        </DataTemplate>
+    </Page.Resources>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+       
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Button x:Name="BackButton"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" 
+                Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                Style="{StaticResource NavigationBackButtonNormalStyle}"
+                AutomationProperties.Name="Back"
+                AutomationProperties.AutomationId="BackButton"
+                AutomationProperties.ItemType="Navigation Button"/>        
+                       
+        <!--Заголовок страницы - название категории!-->
+        <TextBlock x:Name="PageTitle" 
+                   Style="{StaticResource HeaderTextBlockStyle}"
+                   Grid.Row="0"
+                   Grid.Column="1" 
+                   IsHitTestVisible="false" 
+                   TextWrapping="NoWrap" 
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Left"
+                   DataContext="{Binding ElementName=pageRoot, Path=Category}"
+                   Text="{Binding CategoryName }"/>
+        <!-- Новости в выбранной категории!-->
+        <GridView Grid.Column="1" 
+                  Grid.Row="1"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  ManipulationMode="Rotate"
+                  x:Name="ItemGridView"
+                  ItemTemplate="{StaticResource Standard310X230ItemTemplate}"
+                  SelectionMode="None"
+                  IsSwipeEnabled="True"
+                  IsItemClickEnabled="True" 
+                  ItemsSource="{Binding ElementName=pageRoot, Path=Items, Mode=OneWay}"
+                  ItemClick="itemGridView_ItemClick"/>
+        
+    </Grid>
+    
+</Page>
